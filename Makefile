@@ -2,7 +2,8 @@ TAG=latest
 _DOCKER_HOST := tcp://$(shell boot2docker ip):2376
 _DOCKER_CERT_PATH := $(shell echo ~)/.boot2docker/certs/boot2docker-vm
 _DOCKER_TLS_VERIFY := 1
-OPT := -H $(_DOCKER_HOST) --tlsverify --tlscacert="$(_DOCKER_CERT_PATH)/ca.pem" --tlscert="$(_DOCKER_CERT_PATH)/cert.pem" --tlskey="$(_DOCKER_CERT_PATH)/key.pem"
+#OPT := -H $(_DOCKER_HOST) --tlsverify --tlscacert="$(_DOCKER_CERT_PATH)/ca.pem" --tlscert="$(_DOCKER_CERT_PATH)/cert.pem" --tlskey="$(_DOCKER_CERT_PATH)/key.pem"
+OPT :=
 DOCKERC := docker $(OPT)
 CID := $(shell docker $(OPT) ps -l -q )
 LINK :=
@@ -12,6 +13,8 @@ CID := $(shell docker $(OPT) ps |grep oracle| awk '{print $$1}')
 INAME := eclm/oracle
 CNAME := --name oracle
 
+init:
+	@boot2docker shellinit
 build:
 	$(DOCKERC) build --tag=$(INAME) .
 run:
